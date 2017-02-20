@@ -85,15 +85,75 @@ stack.pop()
 # (C) A disk can only be placed on top of a larger disk.
 # Write a program to move the disks from the first rod to the last using Stacks.
 
-n = 5
-rod1 = list(range(n))
-rod2 = list()
-rod3 = list()
+class Hanoi:
+    def __init__(self,n = 5):
+        self.num_disks = n
+        self.rods = [list(reversed(list(range(self.num_disks)))), list(), list()]
+    def __str__(self):
+        return str(self.rods)
+    def move_disk(self, from_rod, to_rod):
+        self.rods[to_rod].append(self.rods[from_rod].pop())
+    def move_n(self, n, from_rod, to_rod, int_rod):
+        if n>1:
+            self.move_n(n-1, from_rod, int_rod, to_rod)
+            self.move_disk(from_rod, to_rod)
+            self.move_n(n-1, int_rod, to_rod, from_rod)
+        else:
+            self.move_disk(from_rod, to_rod)
+    def play(self):
+        self.move_n(self.num_disks, 0, 2, 1)
+
+h = Hanoi()
+print(h)
+h.play()
+print(h)
 
 # 3.5
 # Implement a MyQueue class which implements a queue using two stacks.
+
+class MyQueue:
+    def __init__(self):
+        self.list1 = list()
+        self.list2 = list()
+    def _transfer(self, from_stack, to_stack):
+        for _ in range(len(from_stack)):
+            to_stack.append(from_stack.pop())
+    def push(self, value):
+        self.list1.append(value)
+    def pop(self):
+        if len(self.list2) == 0:
+            self._transfer(self.list1, self.list2)
+        return self.list2.pop()
+    def peak(self):
+        if len(self.list2) == 0:
+            self._transfer(self.list1, self.list2)
+        return self.list2[-1]
+
+mq = MyQueue()
+mq.push(1)
+mq.push(2)
+mq.push(3)
+mq.peak()
+mq.pop()
+mq.pop()
+mq.push(99)
+mq.pop()
+mq.pop()
 
 # 3.6 Write a program to sort a stack in ascending order You should not make any assumptions 
 # about how the stack is implemented. The following are the only functions that 
 # should be used to write this program: push | pop | peek | isEmpty
 
+def sort_stacks(from_stack):
+    to_stack = list()
+    temp_stack = list()
+    while len(from_stack) > 0:
+        while len(to_stack) > 0 and from_stack[-1] < to_stack[-1]:
+            temp_stack.append(to_stack.pop())
+        to_stack.append(from_stack.pop())
+        while len(temp_stack) > 0:
+            to_stack.append(temp_stack.pop())
+    return to_stack
+
+import random
+sort_stacks([random.randint(0,9) for _ in range(10)])
