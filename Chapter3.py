@@ -87,6 +87,8 @@ class SetOfStacks():
         if not self.stack_array[-1]:
             self.stack_array.pop()
         return self.stack_array[-1].pop()
+    def popAt(self, idx):
+        return self.stack_array[idx].pop()
 
 sos = SetOfStacks()
 sos.push(1)
