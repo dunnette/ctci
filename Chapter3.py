@@ -75,6 +75,31 @@ stack.pop()
 # Implement a function popAt(int index) which performs a pop operation on a specific
 # sub-stack.
 
+class SetOfStacks():
+    def __init__(self, capacity = 3):
+        self.capacity = capacity
+        self.stack_array = [list()]
+    def push(self, value):
+        if len(self.stack_array[-1]) >= self.capacity:
+            self.stack_array.append(list())
+        self.stack_array[-1].append(value)
+    def pop(self):
+        if not self.stack_array[-1]:
+            self.stack_array.pop()
+        return self.stack_array[-1].pop()
+
+sos = SetOfStacks()
+sos.push(1)
+sos.push(2)
+sos.push(3)
+sos.push(4)
+sos.push(5)
+sos.pop()
+sos.pop()
+sos.pop()
+sos.pop()
+sos.pop()
+
 # 3.4
 # In the classic problem of the Towers of Hanoi, you have 3 rods and N disks of different
 # sizes which can slide onto any tower. The puzzle starts with disks sorted in ascending
