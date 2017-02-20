@@ -46,11 +46,19 @@ def is_anagram(s1, s2):
         return collections.Counter(s1) == collections.Counter(s2)
     return False
 
+is_anagram('admirer','married')
+is_anagram('test','test')
+is_anagram('test','best')
+
 # 1.5
 # Write a method to replace all spaces in a string with '%20'.
 
 def replace_space(s1):
     return s1.replace(' ','%20')
+
+replace_space('This is a sentence')
+replace_space('    space    ')
+replace_space('    ')
 
 # 1.6
 # Given an image represented by an NxN matrix, where each pixel in the image is 4 
@@ -60,9 +68,10 @@ def rotate_mat(m):
     n = len(m)
     return [[r[i] for r in reversed(m)] for i in range(n)]
 
-# Test case
-
-mat = [[1,2,3],[4,5,6],[0,8,9]]
+import numpy as np
+m = [[1, 2, 3, 4], [5, 6, 0, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+print(np.matrix(m))
+print(np.matrix(rotate_mat(m)))
 
 # 1.7
 #  Write an algorithm such that if an element in an MxN matrix is 0, its entire row and 
@@ -86,10 +95,15 @@ def zero_mat(mat):
             new_mat.append([0 if (i in zero_col) else mat[m_i][i] for i in range(n)])
     return new_mat
 
+import numpy as np
+m = [[1, 2, 3, 4], [5, 6, 0, 8], [9, 10, 11, 12]]
+print(np.matrix(m))
+print(np.matrix(zero_mat(m)))
+
 # 1.8
 # Assume you have a method isSubstring which checks if one word is a substring of 
 # another Given two strings, s1 and s2, write code to check if s2 is a rotation of s1 using 
-# only one call to isSubstring (i e , “waterbottle” is a rotation of “erbottlewat”)
+# only one call to isSubstring (i e , "waterbottle" is a rotation of "erbottlewat")
 
 def isSubstring(s1, s2):
     return s1.find(s2) > -1
@@ -98,3 +112,6 @@ def sub_check(s1, s2):
     if len(s1) == len(s2):
         return isSubstring(s1 * 2, s2)
     return False
+
+sub_check('waterbottle', 'erbottlewat')
+sub_check('waterbottle', 'gasbottle')
