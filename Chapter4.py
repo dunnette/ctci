@@ -1,6 +1,7 @@
 class BinaryTree:
-    def __init__(self, value):
+    def __init__(self, value, parent = None):
         self.value = value
+        self.parent = parent
         self.left = None
         self.right = None
     def __str__(self):
@@ -148,6 +149,29 @@ ll = create_ll(create_bt([1,2,3,4,5,6]))
 # Write an algorithm to find the 'next' node (i.e., in-order successor) of a given node in
 # a binary search tree where each node has a link to its parent.
 
+def find_next_node(btwp):
+    if btwp.right is None:
+        next_node = btwp.parent
+        while next_node is not None and next_node.value < btwp.value:
+            next_node = next_node.parent
+    else:
+        next_node = btwp.right
+        while next_node.left is not None:
+            next_node = next_node.left
+    return next_node
+
+btwp = BinaryTree(20)
+btwp.left = BinaryTree(8, parent = btwp)
+btwp.left.left = BinaryTree(4, parent = btwp.left)
+btwp.left.right = BinaryTree(12, parent = btwp.left)
+btwp.left.right.left = BinaryTree(10, parent = btwp.left.right)
+btwp.left.right.right = BinaryTree(14, parent = btwp.left.right)
+btwp.right = BinaryTree(22, parent = btwp)
+
+print(find_next_node(btwp.left))
+print(find_next_node(btwp.left.right.left))
+print(find_next_node(btwp.left.right.right))
+
 # 4.6
 # Design an algorithm and write code to find the first common ancestor of two nodes
 # in a binary tree. Avoid storing additional nodes in a data structure. NOTE: This is not 
@@ -157,8 +181,7 @@ ll = create_ll(create_bt([1,2,3,4,5,6]))
 # You have two very large binary trees: T1, with millions of nodes, and T2, with hundreds
 # of nodes. Create an algorithm to decide if T2 is a subtree of T1.
 
-
 # 4.8
-# You are given a binary tree in which each node contains a value.Design an algorithm
+# You are given a binary tree in which each node contains a value. Design an algorithm
 # to print all paths which sum up to that value. Note that it can be any path in the tree,
 # it does not have to start at the root.
