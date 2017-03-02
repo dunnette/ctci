@@ -177,6 +177,45 @@ print(find_next_node(btwp.left.right.right))
 # in a binary tree. Avoid storing additional nodes in a data structure. NOTE: This is not 
 # necessarily a binary search tree.
 
+def is_descendant(node_parent, node_descendant):
+    if node_parent is None:
+        return False
+    if node_parent is node_descendant:
+        return True
+    else:
+        return (is_descendant(node_parent.left, node_descendant) or 
+                is_descendant(node_parent.right, node_descendant))
+
+def is_common_ancestor(node_1, node_2):
+    current_node = node_1
+    while current_node is not None:
+        if is_descendant(current_node, node_2):
+            return current_node
+        current_node = current_node.parent
+    return None
+
+#             10
+#            /  \
+#           5    6
+#          / \  / \
+#         1  2  3  4
+#           /
+#          7
+
+btwp = BinaryTree(10)
+btwp.left = BinaryTree(5, parent = btwp)
+btwp.left.left = BinaryTree(1, parent = btwp.left)
+btwp.left.right = BinaryTree(2, parent = btwp.left)
+btwp.left.right.left = BinaryTree(7, parent = btwp.left.right)
+btwp.right = BinaryTree(6, parent = btwp)
+btwp.right.left = BinaryTree(3, parent = btwp.right)
+btwp.right.right = BinaryTree(4, parent = btwp.right)
+
+print(is_common_ancestor(btwp.left.right.left, btwp.right))
+print(is_common_ancestor(btwp.left.right, btwp.left))
+print(is_common_ancestor(btwp.left.right, BinaryTree(99)))
+print(is_common_ancestor(None, None))
+
 # 4.7
 # You have two very large binary trees: T1, with millions of nodes, and T2, with hundreds
 # of nodes. Create an algorithm to decide if T2 is a subtree of T1.
