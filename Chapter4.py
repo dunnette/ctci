@@ -177,16 +177,15 @@ print(find_next_node(btwp.left.right.right))
 # in a binary tree. Avoid storing additional nodes in a data structure. NOTE: This is not 
 # necessarily a binary search tree.
 
-def is_descendant(node_parent, node_descendant):
-    if node_parent is None:
-        return False
-    if node_parent is node_descendant:
-        return True
-    else:
-        return (is_descendant(node_parent.left, node_descendant) or 
-                is_descendant(node_parent.right, node_descendant))
-
 def is_common_ancestor(node_1, node_2):
+    def is_descendant(node_parent, node_descendant):
+        if node_parent is None:
+            return False
+        if node_parent is node_descendant:
+            return True
+        else:
+            return (is_descendant(node_parent.left, node_descendant) or 
+                    is_descendant(node_parent.right, node_descendant))
     current_node = node_1
     while current_node is not None:
         if is_descendant(current_node, node_2):
@@ -220,7 +219,78 @@ print(is_common_ancestor(None, None))
 # You have two very large binary trees: T1, with millions of nodes, and T2, with hundreds
 # of nodes. Create an algorithm to decide if T2 is a subtree of T1.
 
+def is_subtree(bt_large, bt_small):
+    if (bt_large is None and bt_small is None):
+        return True
+    elif (bt_large is None or bt_small is None):
+        return False
+    elif bt_large is bt_small:
+        return (is_subtree(bt_large.left, bt_small.left) and 
+                is_subtree(bt_large.right, bt_small.right))
+    else:
+        return (is_subtree(bt_large.left, bt_small) or 
+                is_subtree(bt_large.right, bt_small))
+
+#             10
+#            /  \
+#           5    6
+#          / \  / \
+#         1  2  3  4
+#           /
+#          7
+
+bt = BinaryTree(10)
+bt.left = BinaryTree(5)
+bt.left.left = BinaryTree(1)
+bt.left.right = BinaryTree(2)
+bt.left.right.left = BinaryTree(7)
+bt.right = BinaryTree(6)
+bt.right.left = BinaryTree(3)
+bt.right.right = BinaryTree(4)
+
+is_subtree(bt, bt.right)
+is_subtree(bt.right, bt)
+is_subtree(bt.right, bt.right.left)
+is_subtree(bt, None)
+is_subtree(None, None)
+
 # 4.8
 # You are given a binary tree in which each node contains a value. Design an algorithm
 # to print all paths which sum up to that value. Note that it can be any path in the tree,
 # it does not have to start at the root.
+
+def print_paths(bt, value):
+    node_list = [bt]
+    agg_path_list = []
+    while node_list:
+        node = node_list.pop()
+        if node.left is not None:
+            node_list.append(node.left)
+        if node.right is not None:
+            node_list.append(node.right)
+        path_list = []
+        while node is not None:
+            path_list.append(node.value)
+            if sum(path_list) == value:
+                agg_path_list.append(list(reversed(path_list)))
+            node = node.parent
+    print(agg_path_list)
+
+#              0
+#            /   \
+#           1     -1
+#          / \    / \
+#         2  1   3  4
+#           /
+#          1
+
+bt = BinaryTree(0)
+bt.left = BinaryTree(1, parent = bt)
+bt.left.left = BinaryTree(2, parent = bt.left)
+bt.left.right = BinaryTree(1, parent = bt.left)
+bt.left.right.left = BinaryTree(1, parent = bt.left.right)
+bt.right = BinaryTree(-1, parent = bt)
+bt.right.left = BinaryTree(3, parent = bt.right)
+bt.right.right = BinaryTree(4, parent = bt.right)
+
+print_paths(bt, 3)
